@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Navigation() {
@@ -6,7 +6,12 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  React.useEffect(() => {
+  // Force scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -15,7 +20,7 @@ export default function Navigation() {
   }, []);
 
   // Fermer le menu mobile quand on clique à l'extérieur
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (isMobileMenuOpen && !event.target.closest('nav')) {
         setIsMobileMenuOpen(false);
@@ -43,17 +48,21 @@ export default function Navigation() {
 
   // Fonction pour scroll smooth vers les sections
   const scrollToSection = (sectionId) => {
+    setIsMobileMenuOpen(false); // Ferme le menu mobile
     if (location.pathname !== '/') {
-      // Si on n'est pas sur la page d'accueil, naviguer d'abord
-      window.location.href = `/#${sectionId}`;
+      // Naviguer vers l'accueil puis scroll
+      window.location.href = '/';
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     } else {
-      // Si on est déjà sur la page d'accueil, scroll vers la section
+      // Scroll direct si déjà sur la page d'accueil
       const element = document.getElementById(sectionId);
       if (element) {
-        element.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   };
@@ -132,20 +141,7 @@ export default function Navigation() {
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             <span>Disponible</span>
           </div>
-          <div className="hidden lg:flex items-center space-x-2">
-            <button 
-              onClick={() => scrollToSection('services')}
-              className="text-green-700 hover:text-green-600 text-sm font-medium transition-colors duration-200"
-            >
-              Services
-            </button>
-            <button 
-              onClick={() => scrollToSection('apropos')}
-              className="text-green-700 hover:text-green-600 text-sm font-medium transition-colors duration-200"
-            >
-              À propos
-            </button>
-          </div>
+        
           <Link 
             to='/contact' 
             className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -208,5 +204,4 @@ export default function Navigation() {
     </nav>
   );
 }
-
 

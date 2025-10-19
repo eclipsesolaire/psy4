@@ -111,7 +111,7 @@ const Services = () => {
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-8">
-                <div>
+  <div>
                   <p className="text-green-700 mb-6 leading-relaxed">
                     Un accompagnement pour explorer vos ressources intérieures, 
                     développer votre confiance et construire l'avenir que vous souhaitez.
@@ -244,8 +244,8 @@ const Services = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+  </div>
+);
 };
 
 export default Services; 
