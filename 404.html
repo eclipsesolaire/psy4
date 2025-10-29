@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting…</title>
+    <script>
+      // GitHub Pages SPA fallback (inspiré de la recommendation CRA)
+      (function () {
+        var l = window.location;
+        // Découpe le chemin en segments non vides: ["repo", "sub", "path"]
+        var segments = l.pathname.split('/').filter(Boolean);
+        // Pour les pages de projet, le premier segment est le nom du dépôt
+        var projectBase = segments.length > 0 ? '/' + segments[0] : '';
+        var rest = segments.slice(1).join('/');
+
+        // Construit l'URL de redirection: conserve sous-chemins, query et hash
+        var redirect = l.protocol + '//' + l.host + projectBase + '/?/' + rest + l.search + l.hash;
+        l.replace(redirect);
+      })();
+    </script>
+  </head>
+  <body></body>
+  <!-- Aide GitHub Pages à servir une SPA sans 404 sur les liens profonds. -->
+</html>
+
+
