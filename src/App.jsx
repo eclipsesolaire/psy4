@@ -38,11 +38,10 @@ function Layout({ children }) {
 }
 
 export default function App() {
-  // Si vous hébergez votre site dans un sous-dossier (/psy5), utilisez-le comme basename.
-  // Si vous avez défini "homepage" dans package.json, process.env.PUBLIC_URL contiendra le bon chemin.
-  const basename = process.env.PUBLIC_URL && process.env.PUBLIC_URL !== '/'
-    ? process.env.PUBLIC_URL
-    : '/psy5'; // si vous servez depuis /psy5 ; sinon remplacez par '/'
+  // Utiliser automatiquement le chemin issu de PUBLIC_URL (défini via "homepage") ou "/" en local
+  const basename = process.env.PUBLIC_URL
+    ? new URL(process.env.PUBLIC_URL).pathname || '/'
+    : '/';
 
   return (
     <Router basename={basename}>
@@ -53,9 +52,6 @@ export default function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/a-propos" element={<APropos />} />
           <Route path="/contact" element={<Contact />} />
-
-          {/* Rediriger /psy5 directement vers / (utile si basename changé) */}
-          <Route path="/psy5" element={<Navigate to="/" replace />} />
 
           {/* fallback : si aucune route ne matche, retour accueil (évite page vide) */}
           <Route path="*" element={<Navigate to="/" replace />} />
